@@ -74,7 +74,36 @@ class ReflexAgent(Agent):
         newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
 
         "*** YOUR CODE HERE ***"
-        return successorGameState.getScore()
+        # return successorGameState.getScore()
+        foodScore, minDistance = foodScoreEstimating(newFood, newPos)
+
+        ghostScore = ghostStateEstimating(newGhostStates, newPos, minDistance)
+
+
+        capsuleScore = 0
+        if len(successorGameState.getCapsules()) >= 1:
+          capsuleDistance = min([manhattanDistance(newPos, i) for i in successorGameState.getCapsules()])
+          if newPos in successorGameState.getCapsules() and capsuleDistance < minDistance:
+            capsuleScore = 2000
+
+        scaredGhostPositions = [i.getPosition() for i in newGhostStates if i.scaredTimer != 0]
+
+        scaredScore = 0
+        if len(scaredGhostPositions) > 0:
+          if newPos in scaredGhostPositions:
+            scaredScore = 2000
+          else:
+            scaredGhostDistance = min([manhattanDistance(newPos, i) for i in scaredGhostPositions])
+            if scaredGhostDistance < minDistance:
+              scaredScore = 2000
+
+
+        scaredTimer = sum(newScaredTimes)
+
+
+        finalScore = successorGameState.getScore() + foodScore + ghostScore + scaredScore + capsuleScore + scaredTimer        
+        return finalScore
+
 
 def scoreEvaluationFunction(currentGameState):
     """
@@ -181,6 +210,44 @@ def betterEvaluationFunction(currentGameState):
     
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
+
+def foodScoreEstimating(newFood, NewPositions):
+    foodDistance = []
+
+    for i in newFood.asList():
+      if newFood[i[0]][i[1]]:
+        foodDistance.append(manhattanDistance(NewPositions, i))
+
+    foodScore = 0
+    minDistance = 0
+    if foodDistance:
+        minDistance = min(foodDistance)
+        if minDistance == 0:
+            foodScore = 100
+        else:
+            foodScore = 10/minDistance
+    return foodScore, minDistance
+
+def ghostStateEstimating(newGhostStates, newPos, minDistance):
+    activeGhostPositions = [i.getPosition() for i in newGhostStates if i.scaredTimer == 0]
+    ghostScore = 100
+    maxGhostDistance = -1
+    minGhostDistance = -1
+    if newPos in activeGhostPositions:
+        ghostScore = -1000
+    activeGhostDistance = [manhattanDistance(newPos, i) for i in activeGhostPositions]
+
+    if activeGhostDistance:
+        maxGhostDistance = max(activeGhostDistance)
+        minGhostDistance = min(activeGhostDistance)
+        if minGhostDistance <= 1:
+            ghostScore = -1000
+            minGhostDistance = -1
+        else:
+            if minGhostDistance < minDistance:
+                ghostScore = -100
+            ghostScore = maxGhostDistance
+    return ghostScore
 
 # Abbreviation
 better = betterEvaluationFunction
