@@ -76,6 +76,7 @@ class ReflexAgent(Agent):
         "*** YOUR CODE HERE ***"
         # return successorGameState.getScore()
         newCapsule = successorGameState.getCapsules()
+        score = successorGameState.getScore()
         foodScore, minDistance = foodScoreEstimate(newFood, newPos)
 
         ghostScore = ghostStateEstimate(newGhostStates, newPos, minDistance)
@@ -83,23 +84,12 @@ class ReflexAgent(Agent):
 
         capsuleScore = capsuleScoreEstimate(newCapsule, minDistance, newPos)
 
-
-        scaredGhostPositions = [i.getPosition() for i in newGhostStates if i.scaredTimer != 0]
-
-        scaredScore = 0
-        if len(scaredGhostPositions) > 0:
-          if newPos in scaredGhostPositions:
-            scaredScore = 2000
-          else:
-            scaredGhostDistance = min([manhattanDistance(newPos, i) for i in scaredGhostPositions])
-            if scaredGhostDistance < minDistance:
-              scaredScore = 2000
-
+        scaredScore = scaredScoreEstimate(newGhostStates, minDistance, newPos)
 
         scaredTimer = sum(newScaredTimes)
 
-
-        finalScore = successorGameState.getScore() + foodScore + ghostScore + scaredScore + capsuleScore + scaredTimer        
+        finalScore = score + (10 * foodScore) + ghostScore + scaredScore + capsuleScore + (0.1 * scaredTimer)   
+             
         return finalScore
 
 
@@ -253,6 +243,18 @@ def capsuleScoreEstimate(newCapsule, minDistance, newPos):
     if newPos in newCapsule and capsuleDistance < minDistance:
         capsuleScore = 2000
     return capsuleScore
+
+def scaredScoreEstimate(newGhostStates, minDistance, newPos):
+    scaredGhostPositions = [i.getPosition() for i in newGhostStates if i.scaredTimer != 0]
+    scaredScore = 0
+    if len(scaredGhostPositions) > 0:
+        if newPos in scaredGhostPositions:
+            scaredScore = 2000
+        else:
+            scaredGhostDistance = min([manhattanDistance(newPos, i) for i in scaredGhostPositions])
+            if scaredGhostDistance < minDistance:
+                scaredScore = 2000
+    return scaredScore
 
 # Abbreviation
 better = betterEvaluationFunction
