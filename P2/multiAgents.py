@@ -75,16 +75,14 @@ class ReflexAgent(Agent):
 
         "*** YOUR CODE HERE ***"
         # return successorGameState.getScore()
-        foodScore, minDistance = foodScoreEstimating(newFood, newPos)
+        newCapsule = successorGameState.getCapsules()
+        foodScore, minDistance = foodScoreEstimate(newFood, newPos)
 
-        ghostScore = ghostStateEstimating(newGhostStates, newPos, minDistance)
+        ghostScore = ghostStateEstimate(newGhostStates, newPos, minDistance)
 
 
-        capsuleScore = 0
-        if len(successorGameState.getCapsules()) >= 1:
-          capsuleDistance = min([manhattanDistance(newPos, i) for i in successorGameState.getCapsules()])
-          if newPos in successorGameState.getCapsules() and capsuleDistance < minDistance:
-            capsuleScore = 2000
+        capsuleScore = capsuleScoreEstimate(newCapsule, minDistance, newPos)
+
 
         scaredGhostPositions = [i.getPosition() for i in newGhostStates if i.scaredTimer != 0]
 
@@ -211,7 +209,7 @@ def betterEvaluationFunction(currentGameState):
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
 
-def foodScoreEstimating(newFood, NewPositions):
+def foodScoreEstimate(newFood, NewPositions):
     foodDistance = []
 
     for i in newFood.asList():
@@ -228,7 +226,7 @@ def foodScoreEstimating(newFood, NewPositions):
             foodScore = 10/minDistance
     return foodScore, minDistance
 
-def ghostStateEstimating(newGhostStates, newPos, minDistance):
+def ghostStateEstimate(newGhostStates, newPos, minDistance):
     activeGhostPositions = [i.getPosition() for i in newGhostStates if i.scaredTimer == 0]
     ghostScore = 100
     maxGhostDistance = -1
@@ -248,6 +246,13 @@ def ghostStateEstimating(newGhostStates, newPos, minDistance):
                 ghostScore = -100
             ghostScore = maxGhostDistance
     return ghostScore
+
+def capsuleScoreEstimate(newCapsule, minDistance, newPos):
+    if len(newCapsule) >= 1:
+        capsuleDistance = min([manhattanDistance(newPos, i) for i in newCapsule])
+    if newPos in newCapsule and capsuleDistance < minDistance:
+        capsuleScore = 2000
+    return capsuleScore
 
 # Abbreviation
 better = betterEvaluationFunction
