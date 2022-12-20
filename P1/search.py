@@ -138,6 +138,22 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
+    fringe, visitedLocation, startLocation = fringeInitializer(problem=problem, DS=util.PriorityQueue())
+    
+    while not fringe.isEmpty():
+        # node[0] is location, while node[1] is path, while node[2] is cumulative cost
+        node = fringe.pop()
+        if problem.isGoalState(node[0]):
+            return node[1]
+        if node[0] not in visitedLocation:
+            visitedLocation.add(node[0])
+            for successor in problem.getSuccessors(node[0]):
+                if successor[0] not in visitedLocation:
+                    cost = node[2] + successor[2]
+                    fringe.push((successor[0], node[1] + [successor[1]], cost), cost)
+
+    return None
+
     util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
@@ -150,14 +166,38 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
+    fringe, visitedLocation, startLocation = fringeInitializer(problem=problem, DS=util.PriorityQueue())
+
+    while not fringe.isEmpty():
+        # node[0] is location, while node[1] is path, while node[2] is cumulative cost
+        node = fringe.pop()
+        if problem.isGoalState(node[0]):
+            return node[1]
+        if node[0] not in visitedLocation:
+            visitedLocation.add(node[0])
+            for successor in problem.getSuccessors(node[0]):
+                if successor[0] not in visitedLocation:
+                    cost = node[2] + successor[2]
+                    # This is Diffrent between UCS and A*:
+                    totalCost = cost + heuristic(successor[0], problem)
+                    fringe.push((successor[0], node[1] + [successor[1]], cost), totalCost)
+
+    return None
+
     util.raiseNotDefined()
 
 def fringeInitializer(problem, DS):
     fringe = DS
     # Location of the agent for isGoalState checking in follow.    
     startLocation = problem.getStartState()
-    startNode = (startLocation, [])
-    fringe.push(startNode)
+
+    if type(DS) == type(util.PriorityQueue()):
+        # (location, path, cost)
+        startNode = (startLocation, [], 0)    
+        fringe.push(startNode, 0)
+    else:
+        startNode = (startLocation, [])
+        fringe.push(startNode)
     # Set of nodes in the queue to be searched
     # {visitedLocation, (True, False)}
     visitedLocation = set()
