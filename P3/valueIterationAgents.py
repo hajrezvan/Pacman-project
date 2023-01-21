@@ -159,6 +159,22 @@ class AsynchronousValueIterationAgent(ValueIterationAgent):
 
     def runValueIteration(self):
         "*** YOUR CODE HERE ***"
+        self.values = collections.defaultdict(float)
+        states = self.mdp.getStates()
+        for state in states:
+            self.values[state] = 0
+
+        "*** YOUR CODE HERE ***"
+        statesSize = len(states)
+
+        for i in range(self.iterations):
+            state = states[i % statesSize]
+
+            if not self.mdp.isTerminal(state):
+                A = self.computeActionFromValues(state)
+                Q = self.computeQValueFromValues(state, A)
+                self.values[state] = Q
+
 
 class PrioritizedSweepingValueIterationAgent(AsynchronousValueIterationAgent):
     """
@@ -179,4 +195,5 @@ class PrioritizedSweepingValueIterationAgent(AsynchronousValueIterationAgent):
 
     def runValueIteration(self):
         "*** YOUR CODE HERE ***"
+
 
