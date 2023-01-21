@@ -154,33 +154,34 @@ class MinimaxAgent(MultiAgentSearchAgent):
         Returns whether or not the game state is a losing state
         """
         "*** YOUR CODE HERE ***"
+
+
+        def minimax(gameState, agentIndex, depth):
+            if depth is self.depth * gameState.getNumAgents() \
+                    or gameState.isLose() or gameState.isWin():
+                return self.evaluationFunction(gameState)
+            if agentIndex is 0:
+                return maximum(gameState, agentIndex, depth)[1]
+            else:
+                return minimum(gameState, agentIndex, depth)[1]
+
+        def maximum(gameState, agentIndex, depth):
+            bestAction = ("max",    -float("inf"))
+            for action in gameState.getLegalActions(agentIndex):
+                succAction = (action, minimax(gameState.generateSuccessor(agentIndex,action),
+                                        (depth + 1) % gameState.getNumAgents(),depth+1))
+                bestAction = max(bestAction,    succAction, key = lambda x:x[1])
+            return bestAction
+
+        def minimum(gameState, agentIndex, depth):
+            bestAction = ("min",float("inf"))
+            for action in gameState.getLegalActions(agentIndex):
+                succAction = (action, minimax(gameState.generateSuccessor(agentIndex,action),
+                                        (depth + 1) % gameState.getNumAgents(),depth+1))
+                bestAction = min(bestAction,succAction,key=lambda x:x[1])
+            return bestAction
+            
         return maximum(gameState, 0, 0)[0]
-
-    def minimax(self, gameState, agentIndex, depth):
-        if depth is self.depth * gameState.getNumAgents() \
-                or gameState.isLose() or gameState.isWin():
-            return self.evaluationFunction(gameState)
-        if agentIndex is 0:
-            return maximum(gameState, agentIndex, depth)[1]
-        else:
-            return minimum(gameState, agentIndex, depth)[1]
-
-    def maximum(self, gameState, agentIndex, depth):
-        bestAction = ("max",    -float("inf"))
-        for action in gameState.getLegalActions(agentIndex):
-            succAction = (action,   self.minimax(gameState.generateSuccessor(agentIndex,action),
-                                      (depth + 1)%gameState.getNumAgents(),depth+1))
-            bestAction = max(bestAction,    succAction, key = lambda x:x[1])
-        return bestAction
-
-    def minimum(self, gameState, agentIndex, depth):
-        bestAction = ("min",float("inf"))
-        for action in gameState.getLegalActions(agentIndex):
-            succAction = (action,self.minimax(gameState.generateSuccessor(agentIndex,action),
-                                      (depth + 1)%gameState.getNumAgents(),depth+1))
-            bestAction = min(bestAction,succAction,key=lambda x:x[1])
-        return bestAction
-
         # Ha Ha Ha :) 🤔
         util.raiseNotDefined()
 
@@ -265,40 +266,43 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         legal moves.
         """
         "*** YOUR CODE HERE ***"
-        def max_value(gameState,depth):
-            Actions=gameState.getLegalActions(0)
-            if len(Actions)==0 or gameState.isWin() or gameState.isLose() or depth==self.depth:
+        def max_value(gameState, depth):
+            Actions = gameState.getLegalActions(0)
+            if len(Actions) == 0 or gameState.isWin() or gameState.isLose() or depth == self.depth:
                 return (self.evaluationFunction(gameState),None)
-            w=-(float("inf"))
-            Act=None
+            # Initializing the game state 🤔
+            weight = -(float("inf"))
+            Act = None
 
             for action in Actions:
-                sucsValue=exp_value(gameState.generateSuccessor(0,action),1,depth)
-                sucsValue=sucsValue[0]
-                if(w<sucsValue):
-                    w,Act=sucsValue,action
-            return(w,Act)
+                sucsValue = exp_value(gameState.generateSuccessor(0, action), 1, depth)
+                sucsValue = sucsValue[0]
+                if(weight < sucsValue):
+                    weight, Act = sucsValue, action
+            return (weight, Act)
 
-        def exp_value(gameState,agentID,depth):
-            Actions=gameState.getLegalActions(agentID)
-            if len(Actions)==0:
-                return (self.evaluationFunction(gameState),None)
+        def exp_value(gameState, agentID, depth):
+            Actions = gameState.getLegalActions(agentID)
+            if len(Actions) == 0:
+                return (self.evaluationFunction(gameState), None)
 
-            l=0
-            Act=None
+            l = 0
+            Act = None
             for action in Actions:
-                if(agentID==gameState.getNumAgents() -1):
-                    sucsValue=max_value(gameState.generateSuccessor(agentID,action),depth+1)
+                if(agentID == gameState.getNumAgents() -1):
+                    sucsValue = max_value(gameState.generateSuccessor(agentID, action), depth + 1)
                 else:
-                    sucsValue=exp_value(gameState.generateSuccessor(agentID,action),agentID+1,depth)
-                sucsValue=sucsValue[0]
-                prob=sucsValue/len(Actions)
-                l+=prob
-            return(l,Act)
+                    sucsValue = exp_value(gameState.generateSuccessor(agentID, action), agentID + 1, depth)
+                sucsValue = sucsValue[0]
+                prob = sucsValue / len(Actions)
+                l += prob
+            return (l, Act)
 
-        max_value=max_value(gameState,0)[1]
-        return max_value
+        score = max_value(gameState, 0)[1]
+        return score
 
+#   ----------------------------------------------------------------
+#       😎
         util.raiseNotDefined()
 
 def betterEvaluationFunction(currentGameState):
@@ -329,7 +333,7 @@ def betterEvaluationFunction(currentGameState):
         ghostPos.append(ghost.getPosition())
     ghostDistance = [0]
     for pos in ghostPos:
-        ghostDistance.append(manhattanDistance(newPos,pos))
+        ghostDistance.append(manhattanDistance(newPos, pos))
 
     numberofPowerPellets = len(successorGameState.getCapsules())
 
