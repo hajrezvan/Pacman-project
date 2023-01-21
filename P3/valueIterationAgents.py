@@ -196,4 +196,65 @@ class PrioritizedSweepingValueIterationAgent(AsynchronousValueIterationAgent):
     def runValueIteration(self):
         "*** YOUR CODE HERE ***"
 
+        mdp = self.mdp
+        values = self.values
+        discount = self.discount
+        iterations = self.iterations
+        theta = self.theta
+        states = mdp.getStates()
+
+
+        predecessors = {} # dict
+        for state in states:
+          predecessors[state] = set()
+
+        pq = util.PriorityQueue()
+
+        # computes predecessors and puts initial stuff into pq
+        for state in states:
+          Q_s = util.Counter()
+
+          for action in mdp.getPossibleActions(state):
+            # assigning predecessors
+            T = mdp.getTransitionStatesAndProbs(state, action)
+            for (nextState, prob) in T:
+              if prob != 0:
+                predecessors[nextState].add(state)
+
+            # computing Q values for determining diff's for the pq
+            Q_s[action] = self.computeQValueFromValues(state, action)
+
+          if not mdp.isTerminal(state): # means: if non terminal state
+            maxQ_s = Q_s[Q_s.argMax()]
+            diff = abs(values[state] - maxQ_s)
+            pq.update(state, -diff)
+
+
+        # now for the actual iterations
+        for i in range(iterations):
+          if pq.isEmpty():
+            return
+
+          state = pq.pop()
+
+          if not mdp.isTerminal(state):
+            Q_s = util.Counter()
+            for action in mdp.getPossibleActions(state):
+              Q_s[action] = self.computeQValueFromValues(state, action)
+
+            values[state] = Q_s[Q_s.argMax()]
+
+          for p in predecessors[state]:
+            Q_p = util.Counter()
+            for action in mdp.getPossibleActions(p):
+              # computing Q values for determining diff's for the pq
+              Q_p[action] = self.computeQValueFromValues(p, action)
+
+            #if not mdp.isTerminal(state): # means: if non terminal state
+            maxQ_p = Q_p[Q_p.argMax()]
+            diff = abs(values[p] - maxQ_p)
+              
+            if diff > theta:
+              pq.update(p, -diff)
+
 
