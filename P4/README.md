@@ -1,25 +1,27 @@
-# The Pac-Man Projects
-## Academic project for Principles & Applications of Artificial Intelligence course at Amirkabir University of Technology in Iran. 
+# Project 1: Search
 
-![](https://inst.eecs.berkeley.edu/~cs188/sp20/assets/images/pacman_game.gif)<br>
+![](https://inst.eecs.berkeley.edu/~cs188/sp20/assets/images/maze.png)<br>
+> All those colored walls, Mazes give Pacman the blues, So teach him to search.
 
 ## Introduction
-<p>The Pac-Man projects were developed for CS 188. They apply an array of AI techniques to playing Pac-Man. However, these projects don’t focus on building AI for video games. Instead, they teach foundational AI concepts, such as informed state-space search, probabilistic inference, and reinforcement learning. These concepts underly real-world application areas such as natural language processing, computer vision, and robotics.</p>
+<p>In this project, your Pacman agent will find paths through his maze world, both to reach a particular location and to collect food efficiently. You will build general search algorithms and apply them to Pacman scenarios.
 <br>
-<p>We designed these projects with three goals in mind. The projects allow you to visualize the results of the techniques you implement. They also contain code examples and clear directions, but do not force you to wade through undue amounts of scaffolding. Finally, Pac-Man provides a challenging problem environment that demands creative solutions; real-world AI problems are challenging, and Pac-Man is too.</p>
-<br>
+As in the Coding Diagnostic, this project includes an autograder for you to grade your answers on your machine. This can be run with the command: <br>
 
-## Project Overview
-- [x] [Search](https://github.com/hajrezvan/Pacman-project/tree/master/P1) <br>
-- [x] [Multi-Agent Search](https://github.com/hajrezvan/Pacman-project/tree/master/P2) <br>
-- [x] [Reinforcement Learning](https://github.com/hajrezvan/Pacman-project/tree/master/P3) <br>
-- [x] [BNs and HMMs: Ghostbusters](https://github.com/hajrezvan/Pacman-project/tree/master/P4) <br>
-- [ ] Machine Learning: Classification <br>
-<br>
+```bash
+python autograder.py
+```
 
-## Technical Notes
-<p>
-The Pac-Man projects are written in pure Python 3.6 and do not depend on any packages external to a standard Python distribution.
+See the autograder tutorial in the Coding Diagnostic for more information about using the autograder. <br>
 </p>
+<br>
 
-[Source project link at berkeley course](https://inst.eecs.berkeley.edu/~cs188/su21/projects/)
+## File Changed
+Files to Edit and Submit: we will fill in portions of ``search.py`` and ``searchAgents.py`` during the assignment. <br>
+All of the files and codes in [Code directory](https://github.com/hajrezvan/Pacman-project/tree/master/P1/Code).
+
+## Report
+You can see the report of project in [this link](https://github.com/hajrezvan/Pacman-project/blob/master/P1/Report/AI%20-%20P1.pdf).
+
+## Source
+[Source project link at berkeley course](https://inst.eecs.berkeley.edu/~cs188/su21/project1/)
