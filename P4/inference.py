@@ -18,7 +18,7 @@ from collections import Counter
 import busters
 import game
 
-from util import manhattanDistance, raiseNotDefined
+from util import manhattanDistance
 
 from pacman import GameState
 
@@ -324,8 +324,7 @@ class ExactInference(InferenceModule):
 
         for position in self.allPositions:
             new_beliefs[position] = sum(
-                pr_transition[prevPosition][position] * beliefs[prevPosition]
-                for prevPosition in beliefs
+                pr_transition[prevPosition][position] * beliefs[prevPosition] for prevPosition in beliefs
             )
         self.beliefs = new_beliefs
 
@@ -385,15 +384,14 @@ class ParticleFilter(InferenceModule):
         pacmanPosition = gameState.getPacmanPosition()
         jailPosition = self.getJailPosition()
         beliefs = self.getBeliefDistribution()
+
         for particle in beliefs:
-            beliefs[particle] *= self.getObservationProb(observation,
-                                                         pacmanPosition,
-                                                         particle, jailPosition)
+            beliefs[particle] *= self.getObservationProb(observation, pacmanPosition, particle, jailPosition)
+
         if beliefs.total() == 0:
             self.initializeUniformly(gameState)
         else:
-            self.particles = random.choices(list(beliefs), k=self.numParticles,
-                                            weights=list(beliefs.values()))
+            self.particles = random.choices(list(beliefs), k=self.numParticles, weights=list(beliefs.values()))
 
     def elapseTime(self, gameState):
         """
@@ -447,10 +445,7 @@ class JointParticleFilter(ParticleFilter):
         uniform prior.
         """
         "*** YOUR CODE HERE ***"
-        positionsForEachGhost = [
-            evenlyDistributedParticles(self.numParticles, self.legalPositions)
-            for _ in range(self.numGhosts)
-        ]
+        positionsForEachGhost = [ evenlyDistributedParticles(self.numParticles, self.legalPositions) for _ in range(self.numGhosts) ]
         for positions in positionsForEachGhost[1:]:
             random.shuffle(positions)
         self.particles = list(zip(*positionsForEachGhost))
