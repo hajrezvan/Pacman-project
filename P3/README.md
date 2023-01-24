@@ -1,27 +1,25 @@
-# Project 1: Search
+# Project 3: Reinforcement Learning
 
-![](https://inst.eecs.berkeley.edu/~cs188/sp20/assets/images/maze.png)<br>
-> All those colored walls, Mazes give Pacman the blues, So teach him to search.
+![](https://inst.eecs.berkeley.edu/~cs188/sp20/assets/images/value.png)<br>
 
 ## Introduction
-<p>In this project, your Pacman agent will find paths through his maze world, both to reach a particular location and to collect food efficiently. You will build general search algorithms and apply them to Pacman scenarios.
+<p>In this project, you will implement value iteration and Q-learning. You will test your agents first on Gridworld (from class), then apply them to a simulated robot controller (Crawler) and Pacman.
 <br>
-As in the Coding Diagnostic, this project includes an autograder for you to grade your answers on your machine. This can be run with the command: <br>
+As in previous projects, this project includes an autograder for you to grade your solutions on your machine. This can be run on all questions with the command:<br>
 
 ```bash
 python autograder.py
 ```
 
-See the autograder tutorial in the Coding Diagnostic for more information about using the autograder. <br>
 </p>
 <br>
 
 ## File Changed
-Files to Edit and Submit: we will fill in portions of ``search.py`` and ``searchAgents.py`` during the assignment. <br>
-All of the files and codes in [Code directory](https://github.com/hajrezvan/Pacman-project/tree/master/P1/Code).
+Files to Edit and Submit: we will fill in portions of `valueIterationAgents.py`, `analysis.py` and `qlearningAgents.py` during the assignment. <br>
+All of the files and codes in [Code directory](https://github.com/hajrezvan/Pacman-project/tree/master/P3/Code).
 
 ## Report
-You can see the report of project in [this link](https://github.com/hajrezvan/Pacman-project/blob/master/P1/Report/AI%20-%20P1.pdf).
+You can see the report of project in [this link](https://github.com/hajrezvan/Pacman-project/blob/master/P3/Report/AI-P3.pdf).
 
 ## Source
-[Source project link at berkeley course](https://inst.eecs.berkeley.edu/~cs188/su21/project1/)
+[Source project link at berkeley course](https://inst.eecs.berkeley.edu/~cs188/su21/project3/)

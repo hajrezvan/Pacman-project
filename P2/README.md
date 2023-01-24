@@ -1,4 +1,4 @@
-# Project 1: Search
+# Project 2: Multi-Agent Search
 
 ![](https://inst.eecs.berkeley.edu/~cs188/sp20/assets/images/pacman_multi_agent.png)<br>
 > Pacman, now with ghosts.Minimax, Expectimax, Evaluation
