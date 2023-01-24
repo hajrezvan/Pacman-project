@@ -12,32 +12,84 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 
-import util
-from game import Agent
-from game import Directions
-from keyboardAgents import KeyboardAgent
-import inference
 import busters
+import inference
+import util
+from keyboardAgents import KeyboardAgent
+
+import math
+from typing import Sequence, TypeVar, List, Callable, Iterable, Tuple, Collection, Dict
+
+
+def getIndexOfMax(values: Sequence, default=-1):
+    return max(range(len(values)), key=values.__getitem__, default=default)
+
+
+def getIndexOfMin(values: Sequence, default=-1):
+    return min(range(len(values)), key=values.__getitem__, default=default)
+
+
+T = TypeVar('T')
+
+
+def all_argmax(f: Callable[[T], float],
+               domain: Iterable[T]) -> Tuple[List[T], float]:
+    """
+    Returns:
+        arg_maxima: all the values in the domain such that f(x) is the max
+        max: the max value of over the domain
+    """
+    max_y = -math.inf
+    args = []
+    for x in domain:
+        y = f(x)
+        if y > max_y:
+            max_y = y
+            args = [x]
+        elif y == max_y:
+            args.append(x)
+    return args, max_y
+
+
+K = TypeVar('K')
+V = TypeVar('V')
+
+
+def dict_argmax(d: Dict[K, V]) -> Tuple[List[K], V]:
+    """ Return the max value in the dict and all the keys whose value is the max """
+    return all_argmax(d.__getitem__, d.keys())
+
+
+from game import Actions
+
 
 class NullGraphics:
     "Placeholder for graphics"
-    def initialize(self, state, isBlue = False):
+
+    def initialize(self, state, isBlue=False):
         pass
+
     def update(self, state):
         pass
+
     def pause(self):
         pass
+
     def draw(self, state):
         pass
+
     def updateDistributions(self, dist):
         pass
+
     def finish(self):
         pass
+
 
 class KeyboardInference(inference.InferenceModule):
     """
     Basic inference module for use with the keyboard.
     """
+
     def initializeUniformly(self, gameState):
         "Begin with a uniform distribution over ghost positions."
         self.beliefs = util.Counter()
@@ -66,7 +118,8 @@ class KeyboardInference(inference.InferenceModule):
 class BustersAgent:
     "An agent that tracks and displays its beliefs about ghost positions."
 
-    def __init__( self, index = 0, inference = "ExactInference", ghostAgents = None, observeEnable = True, elapseTimeEnable = True):
+    def __init__(self, index=0, inference="ExactInference", ghostAgents=None, observeEnable=True,
+                 elapseTimeEnable=True):
         try:
             inferenceType = util.lookup(inference, globals())
         except Exception:
@@ -106,10 +159,11 @@ class BustersAgent:
         "By default, a BustersAgent just stops.  This should be overridden."
         return Directions.STOP
 
+
 class BustersKeyboardAgent(BustersAgent, KeyboardAgent):
     "An agent controlled by the keyboard that displays beliefs about ghost positions."
 
-    def __init__(self, index = 0, inference = "KeyboardInference", ghostAgents = None):
+    def __init__(self, index=0, inference="KeyboardInference", ghostAgents=None):
         KeyboardAgent.__init__(self, index)
         BustersAgent.__init__(self, index, inference, ghostAgents)
 
@@ -119,9 +173,10 @@ class BustersKeyboardAgent(BustersAgent, KeyboardAgent):
     def chooseAction(self, gameState):
         return KeyboardAgent.getAction(self, gameState)
 
+
 from distanceCalculator import Distancer
-from game import Actions
 from game import Directions
+
 
 class GreedyBustersAgent(BustersAgent):
     "An agent that charges the closest ghost."
@@ -138,9 +193,24 @@ class GreedyBustersAgent(BustersAgent):
         Pacman closest to the closest ghost (according to mazeDistance!).
         """
         pacmanPosition = gameState.getPacmanPosition()
-        legal = [a for a in gameState.getLegalPacmanActions()]
+        legalActions = [a for a in gameState.getLegalPacmanActions()]
         livingGhosts = gameState.getLivingGhosts()
         livingGhostPositionDistributions = \
             [beliefs for i, beliefs in enumerate(self.ghostBeliefs)
-             if livingGhosts[i+1]]
+             if livingGhosts[i + 1]]
         "*** YOUR CODE HERE ***"
+        dist = self.distancer.getDistance
+        ghostPositions = [distribution.argMax()
+                          for distribution in livingGhostPositionDistributions]
+
+        def dist_from_pacman(ghostPosition):
+            return dist(pacmanPosition, ghostPosition)
+
+        closestGhostPosition = min(ghostPositions, key=dist_from_pacman)
+
+        def distance_from_closest_ghost_after_action(action):
+            newPacmanPosition = Actions.getSuccessor(pacmanPosition, action)
+            return dist(newPacmanPosition, closestGhostPosition)
+
+        greedyAction = min(legalActions, key=distance_from_closest_ghost_after_action)
+        return greedyAction
