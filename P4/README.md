@@ -1,27 +1,20 @@
-# Project 1: Search
+# Project 4: Ghostbusters
 
-![](https://inst.eecs.berkeley.edu/~cs188/sp20/assets/images/maze.png)<br>
+![](https://inst.eecs.berkeley.edu/~cs188/sp20/assets/images/busters.png)<br>
 > All those colored walls, Mazes give Pacman the blues, So teach him to search.
 
 ## Introduction
-<p>In this project, your Pacman agent will find paths through his maze world, both to reach a particular location and to collect food efficiently. You will build general search algorithms and apply them to Pacman scenarios.
+<p>Pacman spends his life running from ghosts, but things were not always so. Legend has it that many years ago, Pacman’s great grandfather Grandpac learned to hunt ghosts for sport. However, he was blinded by his power and could only track ghosts by their banging and clanging.
 <br>
-As in the Coding Diagnostic, this project includes an autograder for you to grade your answers on your machine. This can be run with the command: <br>
-
-```bash
-python autograder.py
-```
-
-See the autograder tutorial in the Coding Diagnostic for more information about using the autograder. <br>
+In this project, you will design Pacman agents that use sensors to locate and eat invisible ghosts. You’ll advance from locating single, stationary ghosts to hunting packs of multiple moving ghosts with ruthless efficiency. <br>
 </p>
-<br>
 
 ## File Changed
-Files to Edit and Submit: we will fill in portions of ``search.py`` and ``searchAgents.py`` during the assignment. <br>
-All of the files and codes in [Code directory](https://github.com/hajrezvan/Pacman-project/tree/master/P1/Code).
+We will fill in portions of ``bustersAgents.py`` and ``inference.py`` during the assignment. <br>
+All of the files and codes in [Code directory](https://github.com/hajrezvan/Pacman-project/tree/master/P4/Code).
 
 ## Report
-You can see the report of project in [this link](https://github.com/hajrezvan/Pacman-project/blob/master/P1/Report/AI%20-%20P1.pdf).
+You can see the report of project in [this link](https://github.com/hajrezvan/Pacman-project/blob/master/P4/Report/AI-P4.pdf).
 
 ## Source
-[Source project link at berkeley course](https://inst.eecs.berkeley.edu/~cs188/su21/project1/)
+[Source project link at berkeley course](https://inst.eecs.berkeley.edu/~cs188/su21/project4/)
