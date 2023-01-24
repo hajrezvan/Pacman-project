@@ -10,11 +10,11 @@
 <br>
 
 ## Project Overview
-[x] [Search](https://github.com/hajrezvan/Pacman-project/tree/master/P1) <br>
-[x] [Multi-Agent Search](https://github.com/hajrezvan/Pacman-project/tree/master/P2) <br>
-[x] [Reinforcement Learning](https://github.com/hajrezvan/Pacman-project/tree/master/P3) <br>
-[x] [BNs and HMMs: Ghostbusters](https://github.com/hajrezvan/Pacman-project/tree/master/P4) <br>
-[ ] Machine Learning: Classification <br>
+- [x] [Search](https://github.com/hajrezvan/Pacman-project/tree/master/P1) <br>
+- [x] [Multi-Agent Search](https://github.com/hajrezvan/Pacman-project/tree/master/P2) <br>
+- [x] [Reinforcement Learning](https://github.com/hajrezvan/Pacman-project/tree/master/P3) <br>
+- [x] [BNs and HMMs: Ghostbusters](https://github.com/hajrezvan/Pacman-project/tree/master/P4) <br>
+- [ ] Machine Learning: Classification <br>
 <br>
 
 ## Technical Notes
