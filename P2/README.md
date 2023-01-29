@@ -25,5 +25,10 @@ All of the files and codes in [Code directory](https://github.com/hajrezvan/Pacm
 ## Report
 You can see the report of project in [this link](https://github.com/hajrezvan/Pacman-project/blob/master/P2/Report/AI-P2.pdf).
 
+
+## Score
+Score for this phase 92%
+
+
 ## Source
 [Source project link at berkeley course](https://inst.eecs.berkeley.edu/~cs188/su21/project2/)
