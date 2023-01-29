@@ -27,7 +27,7 @@ You can see the report of project in [this link](https://github.com/hajrezvan/Pa
 
 
 ## Score
-Score for this phase 92%
+Project Score 92%
 
 
 ## Source
