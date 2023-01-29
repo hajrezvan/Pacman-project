@@ -22,4 +22,8 @@
 The Pac-Man projects are written in pure Python 3.6 and do not depend on any packages external to a standard Python distribution.
 </p>
 
+## Score
+Average score 86.5%
+
+## Source 
 [Source project link at berkeley course](https://inst.eecs.berkeley.edu/~cs188/su21/projects/)
